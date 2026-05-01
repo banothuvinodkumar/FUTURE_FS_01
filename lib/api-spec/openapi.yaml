@@ -3,20 +3,29 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Portfolio API for Vinod Kumar Banothu
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: projects
+    description: Portfolio projects
+  - name: skills
+    description: Skills and technologies
+  - name: about
+    description: About / profile information
+  - name: contact
+    description: Contact messages
+  - name: portfolio
+    description: Portfolio summary and aggregates
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +33,223 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /projects:
+    get:
+      operationId: listProjects
+      tags: [projects]
+      summary: List all projects
+      parameters:
+        - in: query
+          name: featured
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: List of projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+    post:
+      operationId: createProject
+      tags: [projects]
+      summary: Create a project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProjectBody"
+      responses:
+        "201":
+          description: Created project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+
+  /projects/{id}:
+    get:
+      operationId: getProject
+      tags: [projects]
+      summary: Get a project by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "404":
+          description: Not found
+    put:
+      operationId: updateProject
+      tags: [projects]
+      summary: Update a project
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProjectBody"
+      responses:
+        "200":
+          description: Updated project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+    delete:
+      operationId: deleteProject
+      tags: [projects]
+      summary: Delete a project
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  /skills:
+    get:
+      operationId: listSkills
+      tags: [skills]
+      summary: List all skills
+      responses:
+        "200":
+          description: List of skills
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Skill"
+    post:
+      operationId: createSkill
+      tags: [skills]
+      summary: Create a skill
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSkillBody"
+      responses:
+        "201":
+          description: Created skill
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Skill"
+
+  /skills/{id}:
+    delete:
+      operationId: deleteSkill
+      tags: [skills]
+      summary: Delete a skill
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  /about:
+    get:
+      operationId: getAbout
+      tags: [about]
+      summary: Get about/profile information
+      responses:
+        "200":
+          description: About info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/About"
+    put:
+      operationId: updateAbout
+      tags: [about]
+      summary: Update about/profile information
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAboutBody"
+      responses:
+        "200":
+          description: Updated about info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/About"
+
+  /contact:
+    get:
+      operationId: listContactMessages
+      tags: [contact]
+      summary: List all contact messages
+      responses:
+        "200":
+          description: List of messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ContactMessage"
+    post:
+      operationId: sendContactMessage
+      tags: [contact]
+      summary: Send a contact message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendContactMessageBody"
+      responses:
+        "201":
+          description: Message sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactMessage"
+
+  /portfolio/summary:
+    get:
+      operationId: getPortfolioSummary
+      tags: [portfolio]
+      summary: Get portfolio summary stats
+      responses:
+        "200":
+          description: Portfolio summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortfolioSummary"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +260,282 @@ components:
       required:
         - status
 
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        techStack:
+          type: array
+          items:
+            type: string
+        githubUrl:
+          type: string
+          nullable: true
+        liveUrl:
+          type: string
+          nullable: true
+        imageUrl:
+          type: string
+          nullable: true
+        featured:
+          type: boolean
+        category:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - title
+        - description
+        - techStack
+        - featured
+        - category
+        - createdAt
+
+    CreateProjectBody:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        techStack:
+          type: array
+          items:
+            type: string
+        githubUrl:
+          type: string
+          nullable: true
+        liveUrl:
+          type: string
+          nullable: true
+        imageUrl:
+          type: string
+          nullable: true
+        featured:
+          type: boolean
+        category:
+          type: string
+      required:
+        - title
+        - description
+        - techStack
+        - featured
+        - category
+
+    Skill:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+        proficiency:
+          type: integer
+          minimum: 1
+          maximum: 100
+        iconUrl:
+          type: string
+          nullable: true
+      required:
+        - id
+        - name
+        - category
+        - proficiency
+
+    CreateSkillBody:
+      type: object
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+        proficiency:
+          type: integer
+          minimum: 1
+          maximum: 100
+        iconUrl:
+          type: string
+          nullable: true
+      required:
+        - name
+        - category
+        - proficiency
+
+    About:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        title:
+          type: string
+        bio:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        location:
+          type: string
+          nullable: true
+        githubUrl:
+          type: string
+          nullable: true
+        linkedinUrl:
+          type: string
+          nullable: true
+        resumeUrl:
+          type: string
+          nullable: true
+        photoUrl:
+          type: string
+          nullable: true
+        yearsExperience:
+          type: integer
+          nullable: true
+        availability:
+          type: string
+          nullable: true
+      required:
+        - id
+        - name
+        - title
+        - bio
+        - email
+
+    UpdateAboutBody:
+      type: object
+      properties:
+        name:
+          type: string
+        title:
+          type: string
+        bio:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        location:
+          type: string
+          nullable: true
+        githubUrl:
+          type: string
+          nullable: true
+        linkedinUrl:
+          type: string
+          nullable: true
+        resumeUrl:
+          type: string
+          nullable: true
+        photoUrl:
+          type: string
+          nullable: true
+        yearsExperience:
+          type: integer
+          nullable: true
+        availability:
+          type: string
+          nullable: true
+      required:
+        - name
+        - title
+        - bio
+        - email
+
+    ContactMessage:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        subject:
+          type: string
+        message:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - name
+        - email
+        - subject
+        - message
+        - createdAt
+
+    SendContactMessageBody:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        subject:
+          type: string
+        message:
+          type: string
+      required:
+        - name
+        - email
+        - subject
+        - message
+
+    PortfolioSummary:
+      type: object
+      properties:
+        totalProjects:
+          type: integer
+        featuredProjects:
+          type: integer
+        totalSkills:
+          type: integer
+        skillCategories:
+          type: integer
+        totalMessages:
+          type: integer
+        projectCategories:
+          type: array
+          items:
+            type: object
+            properties:
+              category:
+                type: string
+              count:
+                type: integer
+            required:
+              - category
+              - count
+        skillsByCategory:
+          type: array
+          items:
+            type: object
+            properties:
+              category:
+                type: string
+              count:
+                type: integer
+            required:
+              - category
+              - count
+      required:
+        - totalProjects
+        - featuredProjects
+        - totalSkills
+        - skillCategories
+        - totalMessages
+        - projectCategories
+        - skillsByCategory

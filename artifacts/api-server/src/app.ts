@@ -3,6 +3,14 @@ import cors from "cors";
 import pinoHttp from "pino-http";
 import router from "./routes";
 import { logger } from "./lib/logger";
+import { connectDB } from "./lib/mongodb";
+import { seedDatabase } from "./seed";
+
+connectDB()
+  .then(() => seedDatabase())
+  .catch((err) => {
+    logger.error({ err }, "MongoDB connection or seeding failed on startup");
+  });
 
 const app: Express = express();
 
