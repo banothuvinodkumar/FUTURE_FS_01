@@ -82,14 +82,12 @@ export function Hero() {
                 Contact Me
               </Button>
               
-              {about?.resumeUrl && (
-                <Button size="lg" variant="ghost" asChild className="group">
-                  <a href={about.resumeUrl} target="_blank" rel="noreferrer">
-                    <Download className="mr-2 w-4 h-4 group-hover:-translate-y-1 transition-transform" />
-                    Resume
-                  </a>
-                </Button>
-              )}
+              <Button size="lg" variant="outline" asChild className="group border-primary/30 hover:border-primary text-foreground hover:text-primary">
+                <a href={about?.resumeUrl || "/resume.pdf"} download="Vinod_Kumar_Banothu_Resume.pdf">
+                  <Download className="mr-2 w-4 h-4 group-hover:-translate-y-1 transition-transform" />
+                  Download CV
+                </a>
+              </Button>
             </div>
 
             <div className="flex items-center gap-4 pt-8 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-500">
