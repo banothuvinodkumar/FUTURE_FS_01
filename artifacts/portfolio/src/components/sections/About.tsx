@@ -18,7 +18,7 @@ export function About() {
               About Me.
             </h2>
             <div className="h-1 w-20 bg-primary rounded-full" />
-            <p className="text-muted-foreground text-lg leading-relaxed pt-4">
+            <div className="text-muted-foreground text-lg leading-relaxed pt-4">
               {isLoading ? (
                 <div className="space-y-2">
                   <Skeleton className="h-5 w-full" />
@@ -28,7 +28,7 @@ export function About() {
               ) : (
                 about?.bio || "I'm a full-stack developer passionate about building scalable, user-centric applications. With a strong foundation in modern web technologies, I bridge the gap between elegant interfaces and robust backend systems."
               )}
-            </p>
+            </div>
           </div>
           
           {/* Quick Stats Grid */}

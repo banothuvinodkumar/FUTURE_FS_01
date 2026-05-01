@@ -8,10 +8,21 @@ import {
   UpdateProjectBody,
   DeleteProjectParams,
 } from "@workspace/api-zod";
+import { isDbAvailable } from "../lib/mongodb";
+import { fallbackProjects } from "../lib/fallback-data";
 
 const router = Router();
 
 router.get("/projects", async (req, res) => {
+  if (!isDbAvailable()) {
+    const parsed = ListProjectsQueryParams.safeParse(req.query);
+    if (parsed.success && parsed.data.featured !== undefined) {
+      res.json(fallbackProjects.filter((p) => p.featured === parsed.data.featured));
+    } else {
+      res.json(fallbackProjects);
+    }
+    return;
+  }
   const parsed = ListProjectsQueryParams.safeParse(req.query);
   const filter: Record<string, unknown> = {};
   if (parsed.success && parsed.data.featured !== undefined) {
@@ -35,6 +46,10 @@ router.get("/projects", async (req, res) => {
 });
 
 router.post("/projects", async (req, res) => {
+  if (!isDbAvailable()) {
+    res.status(503).json({ error: "Database unavailable" });
+    return;
+  }
   const body = CreateProjectBody.parse(req.body);
   const project = await Project.create(body);
   res.status(201).json({
@@ -52,6 +67,16 @@ router.post("/projects", async (req, res) => {
 });
 
 router.get("/projects/:id", async (req, res) => {
+  if (!isDbAvailable()) {
+    const { id } = req.params;
+    const project = fallbackProjects.find((p) => p.id === id);
+    if (!project) {
+      res.status(404).json({ error: "Project not found" });
+      return;
+    }
+    res.json(project);
+    return;
+  }
   const { id } = GetProjectParams.parse(req.params);
   const project = await Project.findById(id);
   if (!project) {
@@ -73,6 +98,10 @@ router.get("/projects/:id", async (req, res) => {
 });
 
 router.put("/projects/:id", async (req, res) => {
+  if (!isDbAvailable()) {
+    res.status(503).json({ error: "Database unavailable" });
+    return;
+  }
   const { id } = UpdateProjectParams.parse(req.params);
   const body = UpdateProjectBody.parse(req.body);
   const project = await Project.findByIdAndUpdate(id, body, { new: true });
@@ -95,6 +124,10 @@ router.put("/projects/:id", async (req, res) => {
 });
 
 router.delete("/projects/:id", async (req, res) => {
+  if (!isDbAvailable()) {
+    res.status(503).json({ error: "Database unavailable" });
+    return;
+  }
   const { id } = DeleteProjectParams.parse(req.params);
   await Project.findByIdAndDelete(id);
   res.status(204).send();

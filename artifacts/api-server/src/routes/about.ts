@@ -1,13 +1,19 @@
 import { Router } from "express";
 import { About } from "../models/about";
 import { UpdateAboutBody } from "@workspace/api-zod";
+import { isDbAvailable } from "../lib/mongodb";
+import { fallbackAbout } from "../lib/fallback-data";
 
 const router = Router();
 
 router.get("/about", async (_req, res) => {
+  if (!isDbAvailable()) {
+    res.json(fallbackAbout);
+    return;
+  }
   const about = await About.findOne();
   if (!about) {
-    res.status(404).json({ error: "About info not found" });
+    res.json(fallbackAbout);
     return;
   }
   res.json({
@@ -28,6 +34,10 @@ router.get("/about", async (_req, res) => {
 });
 
 router.put("/about", async (req, res) => {
+  if (!isDbAvailable()) {
+    res.status(503).json({ error: "Database unavailable" });
+    return;
+  }
   const body = UpdateAboutBody.parse(req.body);
   const about = await About.findOneAndUpdate({}, body, {
     new: true,

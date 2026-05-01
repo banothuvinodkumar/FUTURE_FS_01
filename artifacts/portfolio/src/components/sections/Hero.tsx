@@ -61,7 +61,7 @@ export function Hero() {
               </h2>
             </div>
 
-            <p className="text-base md:text-lg text-muted-foreground/80 leading-relaxed max-w-xl animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
+            <div className="text-base md:text-lg text-muted-foreground/80 leading-relaxed max-w-xl animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
               {isLoading ? (
                 <div className="space-y-2">
                   <Skeleton className="h-5 w-full" />
@@ -71,7 +71,7 @@ export function Hero() {
               ) : (
                 about?.bio || "I build exceptional digital experiences that are fast, accessible, and visually compelling."
               )}
-            </p>
+            </div>
 
             <div className="flex flex-wrap items-center gap-4 pt-4 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-400">
               <Button size="lg" className="group" onClick={() => scrollTo("projects")}>

@@ -1,0 +1,85 @@
+export const fallbackAbout = {
+  id: "local-1",
+  name: "Vinod Kumar Banothu",
+  title: "Full Stack Developer",
+  bio: "Passionate full-stack developer with expertise in building modern web applications using React, Node.js, and MongoDB. I love solving complex problems with clean, efficient code and delivering impactful user experiences.",
+  email: "vinodkumarbanothu@gmail.com",
+  phone: "+91 9XXXXXXXXX",
+  location: "India",
+  githubUrl: "https://github.com/vinodkumarbanothu",
+  linkedinUrl: "https://linkedin.com/in/vinodkumarbanothu",
+  resumeUrl: null,
+  photoUrl: null,
+  yearsExperience: 2,
+  availability: "Open to opportunities",
+};
+
+export const fallbackProjects = [
+  {
+    id: "proj-1",
+    title: "E-Commerce Platform",
+    description:
+      "A full-stack e-commerce web application with product listings, cart management, user authentication, and payment integration. Built with React, Node.js, Express, and MongoDB.",
+    techStack: ["React", "Node.js", "Express", "MongoDB", "Stripe"],
+    githubUrl: "https://github.com/vinodkumarbanothu/ecommerce",
+    liveUrl: null,
+    imageUrl: null,
+    featured: true,
+    category: "Full Stack",
+    createdAt: new Date("2024-10-01").toISOString(),
+  },
+  {
+    id: "proj-2",
+    title: "Task Management App",
+    description:
+      "A collaborative task management application with real-time updates, drag-and-drop boards, team workspaces, and role-based access control.",
+    techStack: ["React", "Node.js", "Socket.io", "MongoDB", "JWT"],
+    githubUrl: "https://github.com/vinodkumarbanothu/taskmanager",
+    liveUrl: null,
+    imageUrl: null,
+    featured: true,
+    category: "Full Stack",
+    createdAt: new Date("2024-08-15").toISOString(),
+  },
+  {
+    id: "proj-3",
+    title: "Weather Dashboard",
+    description:
+      "A responsive weather dashboard that displays real-time weather data, 7-day forecasts, and historical trends using OpenWeatherMap API.",
+    techStack: ["React", "JavaScript", "REST APIs", "CSS3"],
+    githubUrl: "https://github.com/vinodkumarbanothu/weather-app",
+    liveUrl: null,
+    imageUrl: null,
+    featured: true,
+    category: "Frontend",
+    createdAt: new Date("2024-06-01").toISOString(),
+  },
+  {
+    id: "proj-4",
+    title: "REST API with Node.js",
+    description:
+      "A scalable RESTful API built with Node.js and Express, featuring JWT authentication, rate limiting, input validation, and comprehensive API documentation.",
+    techStack: ["Node.js", "Express", "MongoDB", "JWT", "Swagger"],
+    githubUrl: "https://github.com/vinodkumarbanothu/rest-api",
+    liveUrl: null,
+    imageUrl: null,
+    featured: false,
+    category: "Backend",
+    createdAt: new Date("2024-04-01").toISOString(),
+  },
+];
+
+export const fallbackSkills = [
+  { id: "sk-1", name: "React.js", category: "Frontend", proficiency: 85, iconUrl: null },
+  { id: "sk-2", name: "JavaScript", category: "Frontend", proficiency: 90, iconUrl: null },
+  { id: "sk-3", name: "HTML/CSS", category: "Frontend", proficiency: 88, iconUrl: null },
+  { id: "sk-4", name: "TypeScript", category: "Frontend", proficiency: 75, iconUrl: null },
+  { id: "sk-5", name: "Tailwind CSS", category: "Frontend", proficiency: 80, iconUrl: null },
+  { id: "sk-6", name: "Node.js", category: "Backend", proficiency: 82, iconUrl: null },
+  { id: "sk-7", name: "Express.js", category: "Backend", proficiency: 80, iconUrl: null },
+  { id: "sk-8", name: "REST APIs", category: "Backend", proficiency: 85, iconUrl: null },
+  { id: "sk-9", name: "MongoDB", category: "Database", proficiency: 78, iconUrl: null },
+  { id: "sk-10", name: "SQL", category: "Database", proficiency: 70, iconUrl: null },
+  { id: "sk-11", name: "Git", category: "Tools", proficiency: 85, iconUrl: null },
+  { id: "sk-12", name: "Docker", category: "Tools", proficiency: 60, iconUrl: null },
+];
