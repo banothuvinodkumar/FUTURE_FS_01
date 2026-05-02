@@ -33,7 +33,24 @@ app.use(
     },
   }),
 );
-app.use(cors());
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      const allowed = [
+        /\.vercel\.app$/,
+        /\.replit\.dev$/,
+        /\.replit\.app$/,
+        /^http:\/\/localhost(:\d+)?$/,
+      ];
+      if (!origin || allowed.some((r) => r.test(origin))) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS: origin not allowed — ${origin}`));
+      }
+    },
+    credentials: true,
+  }),
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
