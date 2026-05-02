@@ -18,7 +18,7 @@ export async function seedDatabase(): Promise<void> {
       yearsExperience: 2,
       availability: "Open to opportunities",
       photoUrl: null,
-      resumeUrl: "/resume.pdf",
+      resumeUrl: "https://your-vercel-domain.vercel.app/MyResume.pdf",
     });
     logger.info("Seeded about info");
   }
