@@ -8,11 +8,11 @@ import portfolioRouter from "./portfolio";
 
 const router: IRouter = Router();
 
-router.use("/health", healthRouter);
-router.use("/projects", projectsRouter);
-router.use("/skills", skillsRouter);
-router.use("/about", aboutRouter);
-router.use("/contact", contactRouter);
-router.use("/portfolio", portfolioRouter);
+router.use(healthRouter);
+router.use(projectsRouter);
+router.use(skillsRouter);
+router.use(aboutRouter);
+router.use(contactRouter);
+router.use(portfolioRouter);
 
 export default router;
