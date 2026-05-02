@@ -82,8 +82,8 @@ export function Contact() {
               <div>
                 <h3 className="text-lg font-bold mb-2">Direct Contact</h3>
                 <p className="text-muted-foreground mb-4">Prefer direct email? Reach out at:</p>
-                <a href="mailto:hello@vinod.dev" className="text-xl font-medium text-foreground hover:text-primary transition-colors underline decoration-primary/30 underline-offset-4">
-                  hello@vinod.dev
+                <a href="mailto:itsvinodkumarcse@gmail.com" className="text-xl font-medium text-foreground hover:text-primary transition-colors underline decoration-primary/30 underline-offset-4">
+                  {Email Me}
                 </a>
               </div>
             </div>
