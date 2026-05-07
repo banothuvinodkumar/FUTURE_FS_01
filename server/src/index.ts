@@ -1,6 +1,7 @@
 import app from "./app";
 import { logger } from "./lib/logger";
 import { seedDatabase } from "./seed";
+import mongoose from "mongoose";
 
 const rawPort = process.env["PORT"];
 
@@ -19,6 +20,13 @@ if (Number.isNaN(port) || port <= 0) {
 // Run the database seed, then start the server
 (async () => {
   try {
+    // Ensure database connection is established before seeding
+    if (!process.env.MONGODB_URI) {
+      throw new Error("MONGODB_URI environment variable is not set.");
+    }
+    await mongoose.connect(process.env.MONGODB_URI);
+    logger.info("Connected to MongoDB successfully");
+
     await seedDatabase();
   } catch (error) {
     logger.error({ err: error }, "Failed to seed database");
