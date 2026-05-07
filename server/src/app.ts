@@ -1,59 +1,43 @@
 import express, { type Express } from "express";
 import cors from "cors";
-import pinoHttp from "pino-http";
-import router from "./routes";
-import { logger } from "./lib/logger";
-import { connectDB } from "./lib/mongodb";
-import { seedDatabase } from "./seed";
-
-connectDB()
-  .then(() => seedDatabase())
-  .catch((err) => {
-    logger.error({ err }, "MongoDB connection or seeding failed on startup");
-  });
+import cookieParser from "cookie-parser";
+import "dotenv/config";
 
 const app: Express = express();
 
-app.use(
-  pinoHttp({
-    logger,
-    serializers: {
-      req(req) {
-        return {
-          id: req.id,
-          method: req.method,
-          url: req.url?.split("?")[0],
-        };
-      },
-      res(res) {
-        return {
-          statusCode: res.statusCode,
-        };
-      },
-    },
-  }),
-);
+// This will be your Vercel URL. We'll set it as an environment variable in Render.
+const clientUrl = process.env.CLIENT_URL;
+
+const allowedOrigins = [
+  "http://localhost:5173", // Vite default dev port
+  "http://127.0.0.1:5173",
+  "http://localhost:4173", // Vite default preview port
+];
+
+// If the CLIENT_URL is set (in production), add it to the allowed origins
+if (clientUrl) {
+  allowedOrigins.push(clientUrl);
+}
+
 app.use(
   cors({
     origin: (origin, callback) => {
-      const allowed = [
-        /\.vercel\.app$/,
-        /\.replit\.dev$/,
-        /\.replit\.app$/,
-        /^http:\/\/localhost(:\d+)?$/,
-      ];
-      if (!origin || allowed.some((r) => r.test(origin))) {
-        callback(null, true);
-      } else {
-        callback(new Error(`CORS: origin not allowed — ${origin}`));
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg =
+          "The CORS policy for this site does not allow access from the specified Origin.";
+        return callback(new Error(msg), false);
       }
+      return callback(null, true);
     },
-    credentials: true,
+    credentials: true, // Important for cookies, authorization headers, etc.
   }),
 );
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-app.use("/api", router);
+app.use(express.json());
+app.use(cookieParser());
+
+// Your API routes would go here
 
 export default app;
