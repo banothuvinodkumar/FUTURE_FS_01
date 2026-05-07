@@ -8,7 +8,7 @@ export const fallbackAbout = {
   location: "India",
   githubUrl: "https://github.com/banothuvinodkumar",
   linkedinUrl: "https://www.linkedin.com/in/vinod-kumar-banothu-559a14325",
-  resumeUrl: "http://localhost:4000/resume.pdf",
+  resumeUrl: "/resume.pdf",
   photoUrl: null,
   yearsExperience: 2,
   availability: "Open to opportunities",
