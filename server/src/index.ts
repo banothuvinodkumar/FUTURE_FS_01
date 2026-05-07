@@ -27,7 +27,10 @@ if (Number.isNaN(port) || port <= 0) {
     await mongoose.connect(process.env.MONGODB_URI);
     logger.info("Connected to MongoDB successfully");
 
-    await seedDatabase();
+    // Only run the seed if the environment variable is set
+    if (process.env.RUN_SEED === "true") {
+      await seedDatabase();
+    }
   } catch (error) {
     logger.error({ err: error }, "Failed to connect to MongoDB or seed database");
     process.exit(1); // Force crash so Render knows it failed and retries!
