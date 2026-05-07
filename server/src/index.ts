@@ -29,7 +29,8 @@ if (Number.isNaN(port) || port <= 0) {
 
     await seedDatabase();
   } catch (error) {
-    logger.error({ err: error }, "Failed to seed database");
+    logger.error({ err: error }, "Failed to connect to MongoDB or seed database");
+    process.exit(1); // Force crash so Render knows it failed and retries!
   }
 
   app.listen(port, (err) => {
