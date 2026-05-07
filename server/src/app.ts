@@ -3,6 +3,9 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import "dotenv/config";
 
+// Import your route definitions here (Adjust the filename if yours is different!)
+import apiRouter from "./routes";
+
 const app: Express = express();
 
 // This will be your Vercel URL. We'll set it as an environment variable in Render.
@@ -39,6 +42,7 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-// Your API routes would go here
+// Mount the API routes
+app.use("/api", apiRouter);
 
 export default app;
