@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development PORT=4000 npm run build && cross-env NODE_ENV=development PORT=4000 MONGODB_URI=mongodb+srv://vinodkumarbanothu855_db_user:aa07MgkGHVbGXnEN@cluster0.pgffdcs.mongodb.net/?appName=Cluster0 npm run start",
+    "dev": "cross-env NODE_ENV=development PORT=4000 npm run build && cross-env NODE_ENV=development PORT=4000 npm run start",
     "build": "node ./build.mjs",
     "start": "node --enable-source-maps ./dist/index.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit"
