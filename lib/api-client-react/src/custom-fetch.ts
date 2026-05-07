@@ -61,21 +61,37 @@ function isUrl(input: RequestInfo | URL): input is URL {
 }
 
 function applyBaseUrl(input: RequestInfo | URL): RequestInfo | URL {
-  if (!_baseUrl) return input;
   const url = resolveUrl(input);
+  
+  // 1. Use VITE_API_URL if it exists (from Vercel Environment Variables)
+  // 2. Fallback to manually set _baseUrl
+  // 3. Fallback to "" (makes it a relative request, which vercel.json proxies to Render)
+  const envBaseUrl = typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_API_URL;
+  const effectiveBaseUrl = envBaseUrl ? envBaseUrl.replace(/\/+$/, "") : (_baseUrl || "");
+
+  if (!effectiveBaseUrl && !url.startsWith("/")) return input;
+
   // Only prepend to relative paths (starting with /)
   if (!url.startsWith("/")) return input;
 
-  const absolute = `${_baseUrl}${url}`;
+  const absolute = `${effectiveBaseUrl}${url}`;
   if (typeof input === "string") return absolute;
   if (isUrl(input)) return new URL(absolute);
   return new Request(absolute, input as Request);
 }
 
 function resolveUrl(input: RequestInfo | URL): string {
-  if (typeof input === "string") return input;
-  if (isUrl(input)) return input.toString();
-  return input.url;
+  let urlStr = "";
+  if (typeof input === "string") urlStr = input;
+  else if (isUrl(input)) urlStr = input.toString();
+  else urlStr = input.url;
+
+  // Strip the hardcoded localhost URLs that OpenAPI generators bake in
+  if (urlStr.startsWith("http://localhost:8080") || urlStr.startsWith("http://localhost:4000")) {
+    urlStr = urlStr.replace(/^http:\/\/localhost:(8080|4000)/, "");
+  }
+
+  return urlStr;
 }
 
 function mergeHeaders(...sources: Array<HeadersInit | undefined>): Headers {

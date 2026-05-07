@@ -18,7 +18,7 @@ export async function seedDatabase(): Promise<void> {
       yearsExperience: 2,
       availability: "Open to opportunities",
       photoUrl: null,
-      resumeUrl: "http://localhost:4000/resume.pdf",
+      resumeUrl: "https://vinodkumar.onrender.com/resume.pdf",
     });
     logger.info("Seeded about info");
   }
