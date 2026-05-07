@@ -4,24 +4,22 @@ import { About } from "./models/about";
 import { logger } from "./lib/logger";
 
 export async function seedDatabase(): Promise<void> {
-  const existingAbout = await About.findOne();
-  if (!existingAbout) {
-    await About.create({
-      name: "Vinod Kumar Banothu",
-      title: "Full Stack Developer",
-      bio: "Passionate full-stack developer with expertise in building modern web applications using React, Node.js, and MongoDB. I love solving complex problems with clean, efficient code and delivering impactful user experiences.",
-      email: "itsvinodkumarcse@gmail.com",
-      phone: "+91 9381428943",
-      location: "India",
-      githubUrl: "https://github.com/banothuvinodkumar",
-      linkedinUrl: "https://www.linkedin.com/in/vinod-kumar-banothu-559a14325",
-      yearsExperience: 2,
-      availability: "Open to opportunities",
-      photoUrl: null,
-      resumeUrl: "https://vinodkumar.onrender.com/resume.pdf",
-    });
-    logger.info("Seeded about info");
-  }
+  await About.deleteMany({});
+  await About.create({
+    name: "Vinod Kumar Banothu",
+    title: "Full Stack Developer",
+    bio: "Passionate full-stack developer with expertise in building modern web applications using React, Node.js, and MongoDB. I love solving complex problems with clean, efficient code and delivering impactful user experiences.",
+    email: "itsvinodkumarcse@gmail.com",
+    phone: "+91 9381428943",
+    location: "India",
+    githubUrl: "https://github.com/banothuvinodkumar",
+    linkedinUrl: "https://www.linkedin.com/in/vinod-kumar-banothu-559a14325",
+    yearsExperience: 2,
+    availability: "Open to opportunities",
+    photoUrl: null,
+    resumeUrl: "https://vinodkumar.onrender.com/resume.pdf",
+  });
+  logger.info("Seeded about info");
 
   await Project.deleteMany({});
   await Project.insertMany([
